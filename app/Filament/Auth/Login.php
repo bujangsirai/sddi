@@ -116,7 +116,7 @@ class Login extends SimplePage
     protected function getLoginFormComponent(): Component
     {
         return TextInput::make('login')
-            ->label('Login')
+            ->label('username')
             ->required()
             ->autocomplete()
             ->autofocus()
@@ -155,7 +155,8 @@ class Login extends SimplePage
     protected function getPasswordFormComponent(): Component
     {
         return TextInput::make('password')
-            ->label(__('filament-panels::pages/auth/login.form.password.label'))
+            // ->label(__('filament-panels::pages/auth/login.form.password.label'))
+            ->label('password')
             ->hint(filament()->hasPasswordReset() ? new HtmlString(Blade::render('<x-filament::link :href="filament()->getRequestPasswordResetUrl()" tabindex="3"> {{ __(\'filament-panels::pages/auth/login.actions.request_password_reset.label\') }}</x-filament::link>')) : null)
             ->password()
             ->revealable(filament()->arePasswordsRevealable())
