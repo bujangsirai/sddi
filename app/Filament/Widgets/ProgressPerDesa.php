@@ -48,7 +48,6 @@ class ProgressPerDesa extends ChartWidget
             'indexAxis' => 'y',
             'maintainAspectRatio' => false,
             'aspectRatio' => 1
-
         ];
     }
 }

@@ -14,7 +14,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            MasterWilayahSeeder::class
+            // MasterWilayahSeeder::class
+            ProgresDesaSeeder::class
         ]);
     }
 }
