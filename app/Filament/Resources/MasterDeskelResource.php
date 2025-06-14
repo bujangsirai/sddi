@@ -17,7 +17,11 @@ class MasterDeskelResource extends Resource
 {
     protected static ?string $model = MasterDeskel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-table-cells';
+    protected static ?string $navigationLabel = 'Master Desa/Kelurahan';
+    protected static ?string $navigationGroup = 'Master Wilayah';
+
+    protected static ?string $slug = 'master-deskel';
 
     public static function form(Form $form): Form
     {

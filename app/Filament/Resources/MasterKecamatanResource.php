@@ -17,7 +17,11 @@ class MasterKecamatanResource extends Resource
 {
     protected static ?string $model = MasterKecamatan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-table-cells';
+    protected static ?string $navigationLabel = 'Master Kecamatan';
+    protected static ?string $navigationGroup = 'Master Wilayah';
+
+    protected static ?string $slug = 'master-kecamatan';
 
     public static function form(Form $form): Form
     {
