@@ -13,13 +13,9 @@ class StatsOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Total Desa/Kelurahan Selesai', MasterDeskel::count())
-
-                ->color('success'),
-
-
-            Stat::make('Total Desa/Kelurahan Belum', '21%')
-
+            Stat::make('Total Desa/Kelurahan Selesai', '0'),
+            Stat::make('Total Desa/Kelurahan Belum', '65'),
+            Stat::make('Persentase Penyelesaian', '54,65%')
         ];
     }
 }

@@ -8,18 +8,27 @@ use Illuminate\Support\Facades\DB;
 
 class ProgressDesaChart extends ChartWidget
 {
-    // CUSTOM METHOD
-    protected static ?string $heading = 'Progress Desa di Kecamatan';
+
+    public string $kecamatanId;
+    public string $kecamatanNama;
+    public string $aspectRatio;
+
+
     protected static ?int $sort = 2;
-    protected static ?string $maxHeight = '400px';
-    protected static string $kecamatanId = '5207010';
+    protected static ?string $heading = "woi";
+
+
+    public function getHeading(): string
+    {
+        return ('Progress Kecamatan ' . $this->kecamatanNama);
+    }
 
     protected function getData(): array
     {
         $desas = MasterDeskel::with(['monitoring' => function ($query) {
             $query->latest()->limit(1);
         }])
-            ->where('wilkerstat_kecamatan_id', static::$kecamatanId)
+            ->where('wilkerstat_kecamatan_id', $this->kecamatanId)
             ->orderBy('desa_kelurahan')
             ->get();
 
@@ -44,7 +53,11 @@ class ProgressDesaChart extends ChartWidget
                     'data' => $progressData,
                     'backgroundColor' => $colors,
                     'borderColor' => '#1f2937',
+
                     'borderWidth' => 1,
+                    'barThickness' => 25,
+                    'barPercentage' => 1,
+                    'categoryPercentage' => 1,
                 ],
             ],
         ];
@@ -59,7 +72,9 @@ class ProgressDesaChart extends ChartWidget
     {
         return [
             'indexAxis' => 'y',
-            'responsive' => true,
+            'responsive' => false,
+            'maintainAspectRatio' => false,
+            'aspectRatio' => $this->aspectRatio,
             'scales' => [
                 'x' => [
                     'min' => 0,
@@ -76,30 +91,20 @@ class ProgressDesaChart extends ChartWidget
                     'ticks' => [
                         'autoSkip' => false
                     ]
-                ]
-            ],
-            'plugins' => [
-                'tooltip' => [
-                    'callbacks' => [
-                        'label' => 'function(context) {
-                            return "Progress: " + context.parsed.x + "%";
-                        }'
-                    ]
                 ],
-                'legend' => [
-                    'display' => false
-                ]
             ]
+
         ];
     }
 
     private function getProgressColor(float $progress): string
     {
         return match (true) {
-            $progress < 30 => '#ef4444',
-            $progress < 60 => '#f59e0b',
-            $progress < 80 => '#3b82f6',
-            default => '#10b981',
+            $progress < 25 => '#ef4444',
+            $progress < 50 => '#f59e0b',
+            $progress < 75 => '#3b82f6',
+            $progress == 100 => '#10b981',
+            default => '#9ca3af',
         };
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\MonitoringDeskel;
+use Doctrine\DBAL\Schema\Index;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\DB;
 
@@ -26,15 +27,19 @@ class ProgressKecamatanChart extends ChartWidget
             ->orderBy('master_kecamatan.wilkerstat_kecamatan_id', 'asc')
             ->get();
 
-
-
-
         // Format data untuk chart
         $kecamatanLabels = [];
         $progressData = [];
-        foreach ($data as $item) {
+        $colors = [];
+
+        foreach ($data as $index => $item) {
             $kecamatanLabels[] = $item->nama_kecamatan;
+            $progress = $item->avg_progress ? $item->avg_progress : 0;
+            // $progress = $item->avg_progress ? ($index + 1) * 10 : 0;
             $progressData[] = round($item->avg_progress, 2);
+            // $progressData[] = ($index + 1) * 10;
+
+            $colors[] = $this->getProgressColor($progress);
         }
 
         return [
@@ -43,8 +48,14 @@ class ProgressKecamatanChart extends ChartWidget
                 [
                     'label' => 'Rata-rata Progress (%)',
                     'data' => $progressData,
-                    'backgroundColor' => '#3b82f6',
-                    'borderColor' => '#1d4ed8',
+                    'backgroundColor' => $colors,
+                    'borderColor' => '#1f2937',
+
+                    'borderWidth' => 1,
+                    'barThickness' => 25,
+                    'barPercentage' => 1,
+                    'categoryPercentage' => 1,
+
                 ],
             ],
         ];
@@ -63,7 +74,7 @@ class ProgressKecamatanChart extends ChartWidget
 
             'indexAxis' => 'y',
             'maintainAspectRatio' => false,
-            'aspectRatio' => 1,
+            'aspectRatio' => 0.8,
 
             'scales' => [
                 'x' => [
@@ -75,5 +86,16 @@ class ProgressKecamatanChart extends ChartWidget
                 ]
             ]
         ];
+    }
+
+    private function getProgressColor(float $progress): string
+    {
+        return match (true) {
+            $progress < 25 => '#ef4444',
+            $progress < 50 => '#f59e0b',
+            $progress < 100 => '#3b82f6',
+            $progress == 100 => '#10b981',
+            default => '#9ca3af',
+        };
     }
 }
