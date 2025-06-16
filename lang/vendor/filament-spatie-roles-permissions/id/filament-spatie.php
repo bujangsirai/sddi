@@ -22,7 +22,7 @@ return [
     */
 
     'section.permission' => 'Permission',
-    'section.permissions' => 'Permission',
+    'section.permissions' => 'Kelola Permission',
     'section.role' => 'Role',
     'section.roles' => 'Kelola Role',
     'section.roles_and_permissions' => 'Role dan Permission',

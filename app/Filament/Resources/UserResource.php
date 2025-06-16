@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Fieldset;
-
+use Filament\Forms\Get;
 
 class UserResource extends Resource
 {
@@ -62,7 +62,16 @@ class UserResource extends Resource
 
                         Select::make('roles')
                             ->multiple()
-                            ->relationship('roles', 'name'),
+                            ->relationship('roles', 'name')
+                            ->live(),
+
+                        // ⬇ Ini field tambahan hanya untuk role "kecamatan"
+                        Select::make('kecamatans')
+                            ->label('Kecamatan yang Diampu')
+                            ->relationship('master_kecamatan', 'kecamatan')
+                            ->multiple()
+                            ->preload()
+                            ->hidden(fn(Get $get) => !collect($get('roles'))->contains('kecamatan')),
 
                     ])
                     ->columns(1)

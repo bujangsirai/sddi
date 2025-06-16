@@ -13,7 +13,7 @@ class MasterDeskelPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('Admin');
     }
 
     /**
@@ -21,7 +21,7 @@ class MasterDeskelPolicy
      */
     public function view(User $user, MasterDeskel $masterdeskel): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('Admin');
     }
 
     /**
@@ -29,7 +29,7 @@ class MasterDeskelPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('Admin');
     }
 
     /**
@@ -37,7 +37,7 @@ class MasterDeskelPolicy
      */
     public function update(User $user, MasterDeskel $masterdeskel): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('Admin');
     }
 
     /**
@@ -45,7 +45,7 @@ class MasterDeskelPolicy
      */
     public function delete(User $user, MasterDeskel $masterdeskel): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('Admin');
     }
 
     /**
@@ -53,7 +53,7 @@ class MasterDeskelPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('Admin');
     }
 
     /**
@@ -61,7 +61,7 @@ class MasterDeskelPolicy
      */
     public function restore(User $user, MasterDeskel $masterdeskel): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('Admin');
     }
 
     /**
@@ -69,7 +69,7 @@ class MasterDeskelPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('Admin');
     }
 
     /**
@@ -77,7 +77,7 @@ class MasterDeskelPolicy
      */
     public function replicate(User $user, MasterDeskel $masterdeskel): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('Admin');
     }
 
     /**
@@ -85,7 +85,7 @@ class MasterDeskelPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('Admin');
     }
 
     /**
@@ -93,7 +93,7 @@ class MasterDeskelPolicy
      */
     public function forceDelete(User $user, MasterDeskel $masterdeskel): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('Admin');
     }
 
     /**
@@ -101,6 +101,6 @@ class MasterDeskelPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('Admin');
     }
 }

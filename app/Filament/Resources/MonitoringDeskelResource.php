@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
-
+use Illuminate\Support\Facades\Auth;
 
 class MonitoringDeskelResource extends Resource
 {
@@ -55,10 +55,7 @@ class MonitoringDeskelResource extends Resource
 
 
 
-                // TextColumn::make('')
-                //     ->label('Nama C')
-                //     ->searchable()
-                //     ->sortable(),
+
 
                 TextColumn::make('catatan')
                     ->label('Catatan')
@@ -100,5 +97,23 @@ class MonitoringDeskelResource extends Resource
             'create' => Pages\CreateMonitoringDeskel::route('/create'),
             'edit' => Pages\EditMonitoringDeskel::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = Auth::user();
+
+        if ($user->hasRole('Super Admin')) {
+            return $query; // 
+        }
+
+        if ($user->hasRole('kecamatan')) {
+            return $query->whereHas('masterDeskel.masterKecamatan', function ($q) {
+                $q->where('kecamatan', 'Sekongkang');
+            });
+        }
+
+        return $query->whereRaw('1=0'); // default: tidak bisa lihat data apapun
     }
 }
