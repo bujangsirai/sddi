@@ -49,7 +49,7 @@ class ProgressDesaChart extends ChartWidget
             'labels' => $labels,
             'datasets' => [
                 [
-                    'label' => 'Progress (%)',
+                 
                     'data' => $progressData,
                     'backgroundColor' => $colors,
                     'borderColor' => '#1f2937',
@@ -89,10 +89,26 @@ class ProgressDesaChart extends ChartWidget
                 ],
                 'y' => [
                     'ticks' => [
+
                         'autoSkip' => false
                     ]
+
+
                 ],
+            ],
+            'plugins' => [
+                'legend' => [
+                    'display' => false,
+                ],
+                'datalabels' => [
+                    'labels' => [
+                        'title' => null
+                    ]
+                ]
             ]
+
+
+
 
         ];
     }
@@ -102,7 +118,7 @@ class ProgressDesaChart extends ChartWidget
         return match (true) {
             $progress < 25 => '#ef4444',
             $progress < 50 => '#f59e0b',
-            $progress < 75 => '#3b82f6',
+            $progress < 100 => '#3b82f6',
             $progress == 100 => '#10b981',
             default => '#9ca3af',
         };

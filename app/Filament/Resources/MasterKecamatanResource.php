@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Columns\TextColumn;
 
 class MasterKecamatanResource extends Resource
 {
@@ -20,6 +21,7 @@ class MasterKecamatanResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-table-cells';
     protected static ?string $navigationLabel = 'Master Kecamatan';
     protected static ?string $navigationGroup = 'Master Wilayah';
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $slug = 'master-kecamatan';
 
@@ -35,19 +37,30 @@ class MasterKecamatanResource extends Resource
     {
         return $table
             ->columns([
-                //
+
+
+
+
+                TextColumn::make('kecamatan')
+                    ->label('Nama Kecamatan')
+                    ->searchable()
+                    ->sortable(),
+
+
+                TextColumn::make('wilkerstat_kecamatan_id')
+                    ->label('Kode Kecamatan')
+                    ->searchable()
+                    ->sortable(),
+
             ])
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->actions([])
+            ->bulkActions([])
+            ->recordUrl(
+                null
+            );
     }
 
     public static function getRelations(): array

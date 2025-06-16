@@ -23,48 +23,70 @@ use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\Fieldset;
+
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
+    protected static ?string $navigationLabel = 'Kelola User';
+    protected static ?string $navigationGroup = 'Role dan Permission';
+    protected static ?int $navigationSort = -1;
+
+    protected static ?string $slug = 'user';
+
 
     public static function form(Form $form): Form
     {
+
         return $form
             ->schema([
 
-                TextInput::make('name')
-                    ->label('Username'),
+                Fieldset::make('Informasi Akun')
+                    ->schema([
+
+                        TextInput::make('name')
+                            ->label('Username')
+                            ->required(),
+
+                        TextInput::make('password')
+                            ->label('Password')
+                            ->password()
+                            ->revealable()
+                            ->required(fn(string $context) => $context === 'create')
+                            ->dehydrated(fn($state) => filled($state))
+                            ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                            ->visible(fn(string $context) => $context === 'create'),
+
+                        Select::make('roles')
+                            ->multiple()
+                            ->relationship('roles', 'name'),
+
+                    ])
+                    ->columns(1)
+                    ->columnSpan(1),
+
+                Fieldset::make('Detail Informasi Akun')
+                    ->schema([
+                        TextInput::make('email')
+                            ->email()
+                            ->required(),
+
+                        TextInput::make('instansi')
+                            ->required(),
+                    ])
+                    ->columns(1)
+                    ->columnSpan(1)
 
 
-                TextInput::make('email')
-                    ->email(),
 
-                TextInput::make('instansi'),
 
-                Select::make('roles')
-                    ->multiple()
-                    ->relationship('roles', 'name'),
 
-                TextInput::make('password')
-                    ->label('Password')
-                    ->password()
-                    ->required()
-                    ->revealable()
-                    ->confirmed()
-                    ->validationMessages([
-                        'confirmed' => 'Password yang anda masukkan tidak sama',
-                    ]),
 
-                TextInput::make('password_confirmation')
-                    ->label('Konfirmasi Password')
-                    ->password()
-                    ->revealable()
-                    ->required()
-
-            ])->columns(2);
+            ])
+            ->columns(2);
     }
 
     public static function table(Table $table): Table
@@ -72,6 +94,7 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable()
                     ->sortable(),
 

@@ -8,11 +8,11 @@ return [
     */
 
     'field.guard_name' => 'Nama Guard',
-    'field.permissions_count' => 'Jumlah Izin',
+    'field.permissions_count' => 'Jumlah Permission',
     'field.name' => 'Nama',
-    'field.permissions' => 'Izin',
-    'field.roles' => 'Peran',
-    'field.role' => 'Peran',
+    'field.permissions' => 'Permission',
+    'field.roles' => 'Role',
+    'field.role' => 'Role',
     'field.team' => 'Tim',
 
     /*
@@ -24,7 +24,7 @@ return [
     'section.permission' => 'Permission',
     'section.permissions' => 'Permission',
     'section.role' => 'Role',
-    'section.roles' => 'Role',
+    'section.roles' => 'Kelola Role',
     'section.roles_and_permissions' => 'Role dan Permission',
     'select-team' => 'Pilih Tim',
     'select-team-hint' => 'Abaikan untuk peran global',

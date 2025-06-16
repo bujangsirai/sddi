@@ -46,7 +46,7 @@ class ProgressKecamatanChart extends ChartWidget
             'labels' => $kecamatanLabels,
             'datasets' => [
                 [
-                    'label' => 'Rata-rata Progress (%)',
+
                     'data' => $progressData,
                     'backgroundColor' => $colors,
                     'borderColor' => '#1f2937',
@@ -80,10 +80,42 @@ class ProgressKecamatanChart extends ChartWidget
                 'x' => [
                     'min' => 0,
                     'max' => 100,
+                    'title' => [
+                        'display' => true,
+                        'text' => 'Persentase Progress'
+                    ],
                     'ticks' => [
                         'stepSize' => 20
                     ]
+                ],
+                'y' => [
+                    'ticks' => [
+                        'autoSkip' => false
+                    ]
+                ],
+            ],
+
+            'plugins' => [
+
+                // 'datalabels' => [
+                //     'anchor' => 'end',      // posisi datanya
+                //     'align' => 'top',       // di atas batang
+                //     'color' => '#000',      // warna angka
+                //     'font' => [
+                //         'weight' => 'bold'
+                //     ]
+                // ]
+
+                'legend' => [
+                    'display' => false,
+                ],
+                'datalabels' => [
+                    'labels' => [
+                        'title' => null
+                    ]
                 ]
+
+
             ]
         ];
     }
