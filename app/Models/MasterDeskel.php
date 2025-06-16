@@ -11,4 +11,9 @@ class MasterDeskel extends Model
         {
                 return $this->hasMany(MonitoringDeskel::class, 'master_deskel_id');
         }
+
+        public function masterKecamatan()
+        {
+                return $this->belongsTo(MasterKecamatan::class, 'wilkerstat_kecamatan_id', 'wilkerstat_kecamatan_id');
+        }
 }

@@ -13,7 +13,7 @@ class MonitoringDeskelPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->checkPermissionTo('view-any MonitoringDeskel');
+        return $user->hasRole('admin');
     }
 
     /**
@@ -21,7 +21,7 @@ class MonitoringDeskelPolicy
      */
     public function view(User $user, MonitoringDeskel $monitoringdeskel): bool
     {
-        return $user->checkPermissionTo('view MonitoringDeskel');
+        return $user->hasRole('admin');
     }
 
     /**
@@ -29,7 +29,7 @@ class MonitoringDeskelPolicy
      */
     public function create(User $user): bool
     {
-        return $user->checkPermissionTo('create MonitoringDeskel');
+        return $user->hasRole('admin');
     }
 
     /**
@@ -37,7 +37,7 @@ class MonitoringDeskelPolicy
      */
     public function update(User $user, MonitoringDeskel $monitoringdeskel): bool
     {
-        return $user->checkPermissionTo('update MonitoringDeskel');
+        return $user->hasRole('admin');
     }
 
     /**
@@ -45,7 +45,7 @@ class MonitoringDeskelPolicy
      */
     public function delete(User $user, MonitoringDeskel $monitoringdeskel): bool
     {
-        return $user->checkPermissionTo('delete MonitoringDeskel');
+        return $user->hasRole('admin');
     }
 
     /**
@@ -53,7 +53,7 @@ class MonitoringDeskelPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->checkPermissionTo('delete-any MonitoringDeskel');
+        return $user->hasRole('admin');
     }
 
     /**
@@ -61,7 +61,7 @@ class MonitoringDeskelPolicy
      */
     public function restore(User $user, MonitoringDeskel $monitoringdeskel): bool
     {
-        return $user->checkPermissionTo('restore MonitoringDeskel');
+        return $user->hasRole('admin');
     }
 
     /**
@@ -69,7 +69,7 @@ class MonitoringDeskelPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->checkPermissionTo('restore-any MonitoringDeskel');
+        return $user->hasRole('admin');
     }
 
     /**
@@ -77,7 +77,7 @@ class MonitoringDeskelPolicy
      */
     public function replicate(User $user, MonitoringDeskel $monitoringdeskel): bool
     {
-        return $user->checkPermissionTo('replicate MonitoringDeskel');
+        return $user->hasRole('admin');
     }
 
     /**
@@ -85,7 +85,7 @@ class MonitoringDeskelPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->checkPermissionTo('reorder MonitoringDeskel');
+        return $user->hasRole('admin');
     }
 
     /**
@@ -93,7 +93,7 @@ class MonitoringDeskelPolicy
      */
     public function forceDelete(User $user, MonitoringDeskel $monitoringdeskel): bool
     {
-        return $user->checkPermissionTo('force-delete MonitoringDeskel');
+        return $user->hasRole('admin');
     }
 
     /**
@@ -101,6 +101,6 @@ class MonitoringDeskelPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->checkPermissionTo('force-delete-any MonitoringDeskel');
+        return $user->hasRole('admin');
     }
 }
