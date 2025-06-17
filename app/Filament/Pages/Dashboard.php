@@ -7,6 +7,8 @@ use App\Filament\Widgets\ProgressKecamatanChart;
 use App\Filament\Widgets\ProgressPerDesa;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\TestChart;
+use App\Models\MasterKecamatan;
+use App\Models\MonitoringDeskel;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,6 +20,8 @@ class Dashboard extends Page
 
     protected function getHeaderWidgets(): array
     {
+
+        $user = Auth::user();
 
         $widgets = [];
 
@@ -31,16 +35,28 @@ class Dashboard extends Page
             }
 
             if (Auth::user()?->hasAnyRole(['Super Admin', 'Admin', 'Kecamatan'])) {
-                $widgets[] =
-                    ProgressDesaChart::make([
-                        'kecamatanId' => '5207010',
-                        'kecamatanNama' => 'Sekongkang',
-                        'aspectRatio' => 1
-                    ]);
+
+                if ($user->hasRole('Kecamatan')) {
+                    $allKecamatan = $user->masterKecamatan;
+                } elseif ($user->hasAnyRole(['Super Admin', 'Admin'])) {
+                    $allKecamatan = MasterKecamatan::all(); // Ambil semua kecamatan dari DB
+                }
+
+                foreach ($allKecamatan as $kecamatan) {
+                    $widgets[] =
+                        ProgressDesaChart::make([
+                            'kecamatanId' => $kecamatan->wilkerstat_kecamatan_id,
+                            'kecamatanNama' => $kecamatan->kecamatan,
+                        ]);
+                }
             }
 
-
-
+            // $widgets[] =
+            //     ProgressDesaChart::make([
+            //         'kecamatanId' => '5207010',
+            //         'kecamatanNama' => 'Sekongkang',
+            //         'aspectRatio' => 1
+            //     ]);
 
             //     ProgressDesaChart::make([
             //         'kecamatanId' => '5207020',

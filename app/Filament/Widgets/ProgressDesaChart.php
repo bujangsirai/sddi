@@ -11,12 +11,20 @@ class ProgressDesaChart extends ChartWidget
 
     public string $kecamatanId;
     public string $kecamatanNama;
-    public string $aspectRatio;
 
+    public array $ratioByKecamatan = [
+        '5207010' => 1,
+        '5207020' => 1.4,
+        '5207021' => 1.2,
+        '5207030' => 0.5,
+        '5207031' => 1,
+        '5207040' => 0.8,
+        '5207050' => 0.8,
+        '5207051' => 0.8,
+    ];
 
     protected static ?int $sort = 2;
     protected static ?string $heading = "woi";
-
 
     public function getHeading(): string
     {
@@ -49,7 +57,7 @@ class ProgressDesaChart extends ChartWidget
             'labels' => $labels,
             'datasets' => [
                 [
-                 
+
                     'data' => $progressData,
                     'backgroundColor' => $colors,
                     'borderColor' => '#1f2937',
@@ -74,7 +82,7 @@ class ProgressDesaChart extends ChartWidget
             'indexAxis' => 'y',
             'responsive' => false,
             'maintainAspectRatio' => false,
-            'aspectRatio' => $this->aspectRatio,
+            'aspectRatio' => $this->ratioByKecamatan[$this->kecamatanId],
             'scales' => [
                 'x' => [
                     'min' => 0,
