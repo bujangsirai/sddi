@@ -49,4 +49,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function masterKecamatan()
+    {
+        return $this->belongsToMany(
+            MasterKecamatan::class,
+            'user_kecamatan',
+            'user_id',
+            'wilkerstat_kecamatan_id',
+            'id',
+            'wilkerstat_kecamatan_id'
+        );
+    }
 }

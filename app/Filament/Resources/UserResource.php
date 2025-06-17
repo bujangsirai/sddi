@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Hash;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Get;
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
 {
@@ -40,13 +41,11 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
-
         return $form
             ->schema([
 
                 Fieldset::make('Informasi Akun')
                     ->schema([
-
                         TextInput::make('name')
                             ->label('Username')
                             ->required(),
@@ -63,16 +62,15 @@ class UserResource extends Resource
                         Select::make('roles')
                             ->multiple()
                             ->relationship('roles', 'name')
+                            ->preload()
                             ->live(),
 
-                        // ⬇ Ini field tambahan hanya untuk role "kecamatan"
-                        Select::make('kecamatans')
+                        Select::make('kecamatan')
                             ->label('Kecamatan yang Diampu')
-                            ->relationship('master_kecamatan', 'kecamatan')
+                            ->relationship('masterKecamatan', 'kecamatan')
                             ->multiple()
                             ->preload()
-                            ->hidden(fn(Get $get) => !collect($get('roles'))->contains('kecamatan')),
-
+                            ->visible(fn(Get $get) => collect($get('roles'))->contains(3)),
                     ])
                     ->columns(1)
                     ->columnSpan(1),
@@ -88,12 +86,6 @@ class UserResource extends Resource
                     ])
                     ->columns(1)
                     ->columnSpan(1)
-
-
-
-
-
-
             ])
             ->columns(2);
     }
@@ -121,6 +113,16 @@ class UserResource extends Resource
                     ->formatStateUsing(fn($state): string => __($state->name))
                     ->searchable()
                     ->sortable(),
+
+                TextColumn::make('masterKecamatan.kecamatan')
+                    ->badge()
+                    ->label('Kecamatan yang Diampu')
+                    ->formatStateUsing(function ($state, $record) {
+                        return $record->hasRole('Kecamatan') ? $state : '';
+                    })
+                    ->searchable()
+                    ->sortable()
+
             ])
             ->filters([
                 //

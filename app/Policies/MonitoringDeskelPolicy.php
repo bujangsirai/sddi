@@ -13,7 +13,7 @@ class MonitoringDeskelPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasRole('Kecamatan');
     }
 
     /**
@@ -21,7 +21,7 @@ class MonitoringDeskelPolicy
      */
     public function view(User $user, MonitoringDeskel $monitoringdeskel): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasRole('Kecamatan');
     }
 
     /**
@@ -29,7 +29,7 @@ class MonitoringDeskelPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasRole('Kecamatan');
     }
 
     /**
@@ -37,7 +37,7 @@ class MonitoringDeskelPolicy
      */
     public function update(User $user, MonitoringDeskel $monitoringdeskel): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasRole('Kecamatan');
     }
 
     /**
@@ -45,7 +45,7 @@ class MonitoringDeskelPolicy
      */
     public function delete(User $user, MonitoringDeskel $monitoringdeskel): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasRole('Kecamatan');
     }
 
     /**
@@ -53,7 +53,7 @@ class MonitoringDeskelPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasRole('Kecamatan');
     }
 
     /**
@@ -61,7 +61,7 @@ class MonitoringDeskelPolicy
      */
     public function restore(User $user, MonitoringDeskel $monitoringdeskel): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasRole('Kecamatan');
     }
 
     /**
@@ -69,7 +69,7 @@ class MonitoringDeskelPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasRole('Kecamatan');
     }
 
     /**
@@ -77,7 +77,7 @@ class MonitoringDeskelPolicy
      */
     public function replicate(User $user, MonitoringDeskel $monitoringdeskel): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasRole('Kecamatan');
     }
 
     /**
@@ -85,7 +85,7 @@ class MonitoringDeskelPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasRole('Kecamatan');
     }
 
     /**
@@ -93,7 +93,7 @@ class MonitoringDeskelPolicy
      */
     public function forceDelete(User $user, MonitoringDeskel $monitoringdeskel): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasRole('Kecamatan');
     }
 
     /**
@@ -101,6 +101,6 @@ class MonitoringDeskelPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->hasRole('Admin');
+        return $user->hasRole('Kecamatan');
     }
 }

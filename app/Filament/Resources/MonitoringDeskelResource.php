@@ -99,21 +99,38 @@ class MonitoringDeskelResource extends Resource
         ];
     }
 
+
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
         $user = Auth::user();
 
+
+        // TODO PARAH DI KANTOR NI
+        // dd($user->masterKecamatan->pluck('wilkerstat_kecamatan_id'));
+
+
+        // DEBUG
+        // $wilkerstatIds = $user->masterKecamatan->pluck('wilkerstat_kecamatan_id');
+        // $results = \App\Models\MonitoringDeskel::whereHas('masterDeskel.masterKecamatan', function ($q) use ($wilkerstatIds) {
+        //     $q->whereIn('wilkerstat_kecamatan_id', $wilkerstatIds);
+        // })->get();
+        // dd($results);
+
+        // dd($user->hasRole('Kecamatan'));
+
         if ($user->hasRole('Super Admin')) {
-            return $query; // 
+            return $query;
         }
 
-        if ($user->hasRole('kecamatan')) {
-            return $query->whereHas('masterDeskel.masterKecamatan', function ($q) {
-                $q->where('kecamatan', 'Sekongkang');
+        // Jika role-nya kecamatan, filter berdasarkan kecamatan yang diampu
+        if ($user->hasRole('Kecamatan')) {
+            $wilkerstatIds = $user->masterKecamatan()->pluck('master_kecamatan.wilkerstat_kecamatan_id');
+            return $query->whereHas('masterDeskel.masterKecamatan', function ($q) use ($wilkerstatIds) {
+                $q->whereIn('wilkerstat_kecamatan_id', $wilkerstatIds);
             });
         }
 
-        return $query->whereRaw('1=0'); // default: tidak bisa lihat data apapun
+        return $query->whereRaw('1=0');
     }
 }
