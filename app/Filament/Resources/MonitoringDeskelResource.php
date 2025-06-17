@@ -20,7 +20,12 @@ class MonitoringDeskelResource extends Resource
 {
     protected static ?string $model = MonitoringDeskel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-receipt-percent';
+    protected static ?string $navigationLabel = 'Input Monitoring Desa';
+    protected static ?string $navigationGroup = 'Input Monitoring';
+    protected static ?int $navigationSort = 1;
+
+    protected static ?string $slug = 'monitoring-deskel';
 
     public static function form(Form $form): Form
     {

@@ -21,7 +21,21 @@ class StatsOverview extends BaseWidget
         if ($user->hasRole('Kecamatan')) {
             $wilkerstatIds = $user->masterKecamatan()->pluck('master_kecamatan.wilkerstat_kecamatan_id');
             $namaKecamatans = $user->masterKecamatan()->pluck('master_kecamatan.kecamatan')->toArray();
-            $labelWilayah = self::implodeWithAnd($namaKecamatans);
+            $labelWilayah = 'Kecamatan ' . self::implodeWithAnd($namaKecamatans);
+            $query->whereHas('masterDeskel.masterKecamatan', function ($q) use ($wilkerstatIds) {
+                $q->whereIn('wilkerstat_kecamatan_id', $wilkerstatIds);
+            });
+        }
+
+        if ($user->hasRole('Kabupaten')) {
+
+            $labelWilayah = 'Kabupaten Sumbawa Barat';
+        }
+
+        if ($user->hasRole('Kecamatan')) {
+            $wilkerstatIds = $user->masterKecamatan()->pluck('master_kecamatan.wilkerstat_kecamatan_id');
+            $namaKecamatans = $user->masterKecamatan()->pluck('master_kecamatan.kecamatan')->toArray();
+            $labelWilayah = 'Kecamatan ' . self::implodeWithAnd($namaKecamatans);
             $query->whereHas('masterDeskel.masterKecamatan', function ($q) use ($wilkerstatIds) {
                 $q->whereIn('wilkerstat_kecamatan_id', $wilkerstatIds);
             });
@@ -36,7 +50,10 @@ class StatsOverview extends BaseWidget
         return [
             Stat::make('Total Desa/Kelurahan Selesai di ' . $labelWilayah, $selesai),
             Stat::make('Total Desa/Kelurahan Belum di ' . $labelWilayah, $belum),
-            Stat::make('Persentase Penyelesaian', $persen),
+
+            Stat::make('Persentase Penyelesaian', $persen)
+                ->chart([0, 59])
+                ->color('success'),
         ];
     }
 

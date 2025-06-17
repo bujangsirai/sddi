@@ -44,8 +44,9 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\FilamentInfoWidget::class,
             ])
             ->navigationGroups([
-                'Master Wilayah',
+                'Input Monitoring',
                 'Role dan Permission',
+                'Master Wilayah',
             ])
             ->middleware([
                 EncryptCookies::class,
