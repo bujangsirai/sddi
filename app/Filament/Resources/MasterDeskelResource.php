@@ -19,9 +19,9 @@ class MasterDeskelResource extends Resource
     protected static ?string $model = MasterDeskel::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-table-cells';
-    protected static ?string $navigationLabel = 'Master Desa/Kelurahan';
-    protected static ?string $navigationGroup = 'Master Wilayah';
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationLabel = 'Daftar Desa/Kelurahan';
+    protected static ?string $navigationGroup = 'Admin';
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $slug = 'master-deskel';
 

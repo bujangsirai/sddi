@@ -19,9 +19,9 @@ class MasterKecamatanResource extends Resource
     protected static ?string $model = MasterKecamatan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-table-cells';
-    protected static ?string $navigationLabel = 'Master Kecamatan';
-    protected static ?string $navigationGroup = 'Master Wilayah';
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationLabel = 'Daftar Kecamatan';
+    protected static ?string $navigationGroup = 'Admin';
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $slug = 'master-kecamatan';
 
@@ -74,8 +74,8 @@ class MasterKecamatanResource extends Resource
     {
         return [
             'index' => Pages\ListMasterKecamatans::route('/'),
-            'create' => Pages\CreateMasterKecamatan::route('/create'),
-            'edit' => Pages\EditMasterKecamatan::route('/{record}/edit'),
+            // 'create' => Pages\CreateMasterKecamatan::route('/create'),
+            // 'edit' => Pages\EditMasterKecamatan::route('/{record}/edit'),
         ];
     }
 }

@@ -21,7 +21,7 @@ class MonitoringDeskelResource extends Resource
     protected static ?string $model = MonitoringDeskel::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-receipt-percent';
-    protected static ?string $navigationLabel = 'Input Monitoring Desa';
+    protected static ?string $navigationLabel = 'Input Monitoring';
     protected static ?string $navigationGroup = 'Input Monitoring';
     protected static ?int $navigationSort = 1;
 

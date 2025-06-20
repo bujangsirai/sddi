@@ -46,7 +46,7 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Input Monitoring',
                 'Role dan Permission',
-                'Master Wilayah',
+                'Admin',
             ])
             ->middleware([
                 EncryptCookies::class,

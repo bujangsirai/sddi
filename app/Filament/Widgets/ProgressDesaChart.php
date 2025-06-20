@@ -23,9 +23,6 @@ class ProgressDesaChart extends ChartWidget
         '5207051' => 0.8,
     ];
 
-    protected static ?int $sort = 2;
-    protected static ?string $heading = "woi";
-
     public function getHeading(): string
     {
         return ('Progress Kecamatan ' . $this->kecamatanNama);
@@ -80,7 +77,6 @@ class ProgressDesaChart extends ChartWidget
     {
         return [
             'indexAxis' => 'y',
-            'responsive' => false,
             'maintainAspectRatio' => false,
             'aspectRatio' => $this->ratioByKecamatan[$this->kecamatanId],
             'scales' => [
