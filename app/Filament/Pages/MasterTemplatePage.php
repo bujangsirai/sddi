@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\MasterTemplate;
+use App\Models\MonitoringDeskel;
 use Filament\Actions\Action;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
@@ -85,13 +86,60 @@ class MasterTemplatePage extends Page
 
     public function save()
     {
+        // 1. Simpan MasterTemplate terbaru
         MasterTemplate::updateOrCreate(
             ['id' => 1],
             ['detail_progress' => $this->detailProgress]
         );
 
+        // 2. Ambil template yang sudah disimpan
+        $template = $this->detailProgress;
+
+        // 3. Ambil semua monitoring yang perlu di-update
+        $allMonitoring = MonitoringDeskel::all();
+
+        foreach ($allMonitoring as $monitoring) {
+            $oldProgress = $monitoring->detail_progress;
+
+            $updatedProgress = collect($template)->map(function ($indikatorTemplate) use ($oldProgress) {
+                $indikatorNama = $indikatorTemplate['indikator'];
+                $templateDetail = $indikatorTemplate['detail'];
+
+                // Cari indikator yang sama di data lama
+                $oldIndikator = collect($oldProgress)->firstWhere('indikator', $indikatorNama);
+                $oldDetail = collect($oldIndikator['detail'] ?? []);
+
+                // Loop semua detail template
+                $updatedDetail = collect($templateDetail)->map(function ($detailItem) use ($oldDetail) {
+                    $namaDetail = $detailItem['nama'];
+
+                    // Cek apakah detail lama memiliki nama yang sama
+                    $old = $oldDetail->firstWhere('nama', $namaDetail);
+
+                    return [
+                        'nama' => $namaDetail,
+                        'nilai' => $old['nilai'] ?? 0,
+                    ];
+                });
+
+                return [
+                    'indikator' => $indikatorNama,
+                    'detail' => $updatedDetail->toArray(),
+                    'nilai' => round($updatedDetail->pluck('nilai')->avg(), 2),
+                ];
+            });
+
+            // Hitung progress keseluruhan
+            $overallAvg = round($updatedProgress->pluck('nilai')->avg(), 2);
+
+            $monitoring->update([
+                'detail_progress' => $updatedProgress,
+                'progress_persen' => $overallAvg,
+            ]);
+        }
+
         Notification::make()
-            ->title('Template berhasil disimpan!')
+            ->title('Template berhasil disimpan & semua desa disinkronkan!')
             ->success()
             ->send();
     }

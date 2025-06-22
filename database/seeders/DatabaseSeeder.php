@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             // MasterWilayahSeeder::class,
             // ProgresDesaSeeder::class
-            MasterTemplateSeeder::class
+            // MasterTemplateSeeder::class
+            ProgresDesaSeederV2::class
         ]);
     }
 }
