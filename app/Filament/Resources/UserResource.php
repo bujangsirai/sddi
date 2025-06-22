@@ -43,7 +43,6 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-
                 Fieldset::make('Informasi Akun')
                     ->schema([
                         TextInput::make('name')

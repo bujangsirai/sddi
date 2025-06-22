@@ -6,6 +6,8 @@ use App\Filament\Resources\MonitoringDeskelResource\Pages;
 use App\Filament\Resources\MonitoringDeskelResource\RelationManagers;
 use App\Models\MonitoringDeskel;
 use Filament\Forms;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -15,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
 use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\TextInput;
 
 class MonitoringDeskelResource extends Resource
 {
@@ -31,7 +34,76 @@ class MonitoringDeskelResource extends Resource
     {
         return $form
             ->schema([
-                //
+
+
+                Repeater::make('detail_progress')
+                    ->label('Detail Progress')
+                    ->columns(2)
+                    // ->addActionLabel(function ($state) {
+                    //     return $state['indikator'] ?? 'Indikator';
+                    // })
+                    ->schema([
+                        TextInput::make('indikator')
+                            ->label('Nama Indikator')
+                            ->required()
+                            ->disabled()
+                            ->dehydrated(true),
+
+                        TextInput::make('nilai')
+                            ->label('Persentase Selesai')
+                            ->required()
+                            ->disabled()
+                            ->numeric()
+                            ->afterStateHydrated(function ($component, $state, $record, $set, $get) {
+                                $detail = $get('detail') ?? [];
+                                $avg = collect($detail)->pluck('nilai')->avg();
+                                $set('nilai', round($avg, 2));
+                            })
+                            ->afterStateUpdated(function ($state, $set, $get) {
+                                $detail = $get('detail') ?? [];
+                                $avg = collect($detail)->pluck('nilai')->avg();
+                                $set('nilai', round($avg, 2));
+                            })
+                            ->dehydrated(true),
+
+                        Repeater::make('detail')
+                            ->label('Detail Indikator')
+                            // ->addActionLabel(function ($state) {
+                            //     return $state['nama'] ?? 'Detail';
+                            // })
+                            ->schema([
+                                TextInput::make('nama')
+                                    ->label('Nama Detail')
+                                    ->required()
+                                    ->disabled()
+                                    ->dehydrated(true),
+
+                                TextInput::make('nilai')
+                                    ->label('Persentase Selesai')
+                                    ->numeric()
+                                    ->required()
+                                    ->afterStateUpdated(function ($state, $set, $get) {
+                                        $detail = $get('../../detail') ?? [];
+                                        $avg = collect($detail)->pluck('nilai')->avg();
+                                        $set('../../nilai', round($avg, 2));
+                                    }),
+                            ])
+                            ->defaultItems(0)
+                            ->reorderable(false)
+                            ->addable(false)
+                            ->deletable(false)
+                            ->columns(2)
+                            ->columnSpan(2),
+                    ])
+                    ->defaultItems(0)
+                    ->reorderable(false)
+                    ->addable(false)
+                    ->deletable(false)
+                    ->columnSpanFull(),
+
+                Textarea::make('catatan')
+                    ->label('Catatan')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -50,33 +122,28 @@ class MonitoringDeskelResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                IconColumn::make('detail_progress')
-                    ->label('Detail'),
-
                 TextColumn::make('progress_persen')
                     ->label('Persentase')
                     ->searchable()
                     ->sortable(),
-
-
-
-
 
                 TextColumn::make('catatan')
                     ->label('Catatan')
                     ->searchable()
                     ->sortable(),
 
-
-
-
-                //
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $detailProgress = $data['detail_progress'] ?? [];
+                        $indikatorNilais = collect($detailProgress)->pluck('nilai')->filter(fn($n) => is_numeric($n));
+                        $data['progress_persen'] = round($indikatorNilais->avg() ?? 0, 2);
+                        return $data;
+                    }),
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
@@ -99,8 +166,9 @@ class MonitoringDeskelResource extends Resource
     {
         return [
             'index' => Pages\ListMonitoringDeskels::route('/'),
-            'create' => Pages\CreateMonitoringDeskel::route('/create'),
-            'edit' => Pages\EditMonitoringDeskel::route('/{record}/edit'),
+            // 'create' => Pages\CreateMonitoringDeskel::route('/create'),
+            // 'edit' => Pages\EditMonitoringDeskel::route('/{record}/edit'),
+            // 'edit' => Pages\EditMonitoringDeskel::route('/{record}/edit'),
         ];
     }
 
