@@ -6,6 +6,7 @@ use App\Models\MasterTemplate;
 use Filament\Actions\Action;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
+use Filament\Notifications\Notification;
 
 class MasterTemplatePage extends Page
 {
@@ -56,6 +57,11 @@ class MasterTemplatePage extends Page
     {
         unset($this->detailProgress[$index]);
         $this->detailProgress = array_values($this->detailProgress);
+
+        Notification::make()
+            ->title('Indikator Terhapus')
+            ->danger()
+            ->send();
     }
 
     public function addDetail($indikatorIndex)
@@ -67,6 +73,11 @@ class MasterTemplatePage extends Page
     {
         unset($this->detailProgress[$indikatorIndex]['detail'][$detailIndex]);
         $this->detailProgress[$indikatorIndex]['detail'] = array_values($this->detailProgress[$indikatorIndex]['detail']);
+
+        Notification::make()
+            ->title('Detail Indikator Terhapus')
+            ->danger()
+            ->send();
     }
 
     public function save()
@@ -75,6 +86,10 @@ class MasterTemplatePage extends Page
             ['id' => 1],
             ['detail_progress' => $this->detailProgress]
         );
-        session()->flash('message', 'Template berhasil disimpan!');
+
+        Notification::make()
+            ->title('Template berhasil disimpan!')
+            ->success()
+            ->send();
     }
 }

@@ -1,34 +1,51 @@
 <x-filament-panels::page>
 
-    <x-filament::modal>
+    <div class="space-y-4">
 
-        <x-slot name="trigger">
-            <x-filament::button>
-                Ubah Indikator
-            </x-filament::button>
-        </x-slot>
+        <x-filament::button color="primary" wire:click="addIndikator">
+            <div class="flex items-center gap-x-1">
+                <x-heroicon-o-plus class="w-4 h-4" />
+                Tambah Indikator
+            </div>
+        </x-filament::button>
 
-        <x-slot name="heading">
-            Ubah Daftar Indikator
-        </x-slot>
 
-        <div class="space-y-4">
+        <x-filament::button color="success" wire:click="save">
+            <div class="flex items-center gap-x-1">
+                <x-heroicon-o-document-arrow-down class="w-4 h-4" />
+                Simpan
+            </div>
+        </x-filament::button>
 
-            <x-filament::button color="primary" wire:click="addIndikator"> + Tambah Indikator</x-filament::button>
-            <x-filament::button color="success" wire:click="save"> Simpan</x-filament::button>
-
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 
             @foreach ($detailProgress as $i => $indikator)
                 <x-filament::card>
+
+                    <div class="mb-2">
+
+                        <x-filament::button size="sm" wire:click="addDetail({{ $i }})">
+                            <div class="flex items-center gap-x-1">
+                                <x-heroicon-o-plus class="w-4 h-4" />
+                                Tambah Detail Indikator
+                            </div>
+                        </x-filament::button>
+
+
+                        <x-filament::button color="danger" size="sm"
+                            wire:click="removeIndikator({{ $i }})">
+                            <div class="flex items-center gap-x-1">
+                                <x-heroicon-o-trash class="w-4 h-4" />
+                                Hapus Indikator
+                            </div>
+                        </x-filament::button>
+                    </div>
                     <label class="items-center justify-between block w-full mb-2 text-sm font-medium text-gray-700">
                         Nama Indikator
                         <div class="flex w-full gap-2 mt-1">
                             <input wire:model="detailProgress.{{ $i }}.indikator"
                                 class="flex-grow p-2 border rounded" placeholder="Nama Indikator">
-                            <x-filament::button color="danger" size="sm"
-                                wire:click="removeIndikator({{ $i }})" class="p-2">
-                                <x-heroicon-o-trash class="w-4 h-4" />
-                            </x-filament::button>
+
                         </div>
                     </label>
 
@@ -47,36 +64,14 @@
                         @endforeach
                     </label>
 
-                    <div class="mt-2">
-                        <x-filament::button size="sm" wire:click="addDetail({{ $i }})">
-                            + Tambah Detail Indikator
-                        </x-filament::button>
-                    </div>
-
                 </x-filament::card>
             @endforeach
 
-            @if (session()->has('message'))
-                <div class="text-green-600">{{ session('message') }}</div>
-            @endif
+
         </div>
 
-    </x-filament::modal>
-
-    <div class="space-y-6 ">
-
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-            @foreach ($detailProgress as $indikator)
-                <x-filament::card class="h-full">
-                    <h2 class="mb-2 text-lg font-semibold">{{ $indikator['indikator'] }}</h2>
-                    <ul class="text-sm text-gray-700 list-disc list-inside">
-                        @foreach ($indikator['detail'] as $item)
-                            <li>{{ $item['nama'] }}</li>
-                        @endforeach
-                    </ul>
-                </x-filament::card>
-            @endforeach
-        </div>
     </div>
+
+
 
 </x-filament-panels::page>
