@@ -54,37 +54,37 @@ class MasterTemplatePage extends Page
         $this->detailProgress = $template?->detail_progress ?? [];
     }
 
-    public function addIndikator()
+    public function addAspek()
     {
         $this->detailProgress[] = [
-            'indikator' => '',
-            'detail' => [],
+            'aspek' => '',
+            'indikator' => [],
         ];
     }
 
-    public function removeIndikator($index)
+    public function removeAspek($index)
     {
         unset($this->detailProgress[$index]);
         $this->detailProgress = array_values($this->detailProgress);
 
         Notification::make()
-            ->title('Indikator Terhapus')
+            ->title('Aspek Terhapus')
             ->danger()
             ->send();
     }
 
-    public function addDetail($indikatorIndex)
+    public function addIndikator($indikatorIndex)
     {
-        $this->detailProgress[$indikatorIndex]['detail'][] = ['nama' => ''];
+        $this->detailProgress[$indikatorIndex]['indikator'][] = ['nama' => ''];
     }
 
-    public function removeDetail($indikatorIndex, $detailIndex)
+    public function removeIndikator($indikatorIndex, $detailIndex)
     {
-        unset($this->detailProgress[$indikatorIndex]['detail'][$detailIndex]);
-        $this->detailProgress[$indikatorIndex]['detail'] = array_values($this->detailProgress[$indikatorIndex]['detail']);
+        unset($this->detailProgress[$indikatorIndex]['indikator'][$detailIndex]);
+        $this->detailProgress[$indikatorIndex]['indikator'] = array_values($this->detailProgress[$indikatorIndex]['indikator']);
 
         Notification::make()
-            ->title('Detail Indikator Terhapus')
+            ->title('Indikator Terhapus')
             ->danger()
             ->send();
     }
@@ -97,52 +97,54 @@ class MasterTemplatePage extends Page
             ['detail_progress' => $this->detailProgress]
         );
 
-        // 2. Ambil template yang sudah disimpan
+        // 2. Ambil template yang baru saja disimpan (dari Livewire property)
         $template = $this->detailProgress;
 
-        // 3. Ambil semua monitoring yang perlu di-update
+        // 3. Ambil semua data MonitoringDeskel
         $allMonitoring = MonitoringDeskel::all();
 
         foreach ($allMonitoring as $monitoring) {
             $oldProgress = $monitoring->detail_progress;
 
-            $updatedProgress = collect($template)->map(function ($indikatorTemplate) use ($oldProgress) {
-                $indikatorNama = $indikatorTemplate['indikator'];
-                $templateDetail = $indikatorTemplate['detail'];
+            $updatedProgress = collect($template)->map(function ($aspekTemplate) use ($oldProgress) {
+                $aspekNama = $aspekTemplate['aspek'];
+                $templateIndikator = $aspekTemplate['indikator'];
 
-                // Cari indikator yang sama di data lama
-                $oldIndikator = collect($oldProgress)->firstWhere('indikator', $indikatorNama);
-                $oldDetail = collect($oldIndikator['detail'] ?? []);
+                // Cari aspek yang sama di progress lama
+                $oldAspek = collect($oldProgress)->firstWhere('aspek', $aspekNama);
+                $oldIndikator = collect($oldAspek['indikator'] ?? []);
 
-                // Loop semua detail template
-                $updatedDetail = collect($templateDetail)->map(function ($detailItem) use ($oldDetail) {
-                    $namaDetail = $detailItem['nama'];
+                // Loop indikator
+                $updatedIndikator = collect($templateIndikator)->map(function ($indikatorItem) use ($oldIndikator) {
+                    $namaIndikator = $indikatorItem['nama'];
 
-                    // Cek apakah detail lama memiliki nama yang sama
-                    $old = $oldDetail->firstWhere('nama', $namaDetail);
+                    // Ambil nilai lama jika ada
+                    $old = $oldIndikator->firstWhere('nama', $namaIndikator);
 
                     return [
-                        'nama' => $namaDetail,
+                        'nama' => $namaIndikator,
                         'nilai' => $old['nilai'] ?? 0,
                     ];
                 });
 
                 return [
-                    'indikator' => $indikatorNama,
-                    'detail' => $updatedDetail->toArray(),
-                    'nilai' => round($updatedDetail->pluck('nilai')->avg(), 2),
+                    'aspek' => $aspekNama,
+                    'indikator' => $updatedIndikator->toArray(),
+                    'nilai' => round($updatedIndikator->pluck('nilai')->avg(), 2),
                 ];
             });
 
-            // Hitung progress keseluruhan
+            // Hitung rata-rata semua aspek
             $overallAvg = round($updatedProgress->pluck('nilai')->avg(), 2);
 
+            // Update data monitoring
             $monitoring->update([
                 'detail_progress' => $updatedProgress,
                 'progress_persen' => $overallAvg,
             ]);
         }
 
+        // 4. Notifikasi sukses
         Notification::make()
             ->title('Template berhasil disimpan & semua desa disinkronkan!')
             ->success()
