@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProgressKecamatanChart extends ChartWidget
 {
-    protected static ?string $heading = 'Progress Desa/Kelurahan per Kecamatan';
+    protected static ?string $heading = 'Progress Per Kecamatan';
     protected static ?int $sort = 1;
 
     protected function getData(): array

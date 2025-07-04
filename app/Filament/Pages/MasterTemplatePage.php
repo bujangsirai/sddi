@@ -12,11 +12,11 @@ use Filament\Notifications\Notification;
 class MasterTemplatePage extends Page
 {
 
-    protected ?string $heading = 'Kelola Indikator Monitoring Desa';
+    protected ?string $heading = 'Kelola Penilaian Monitoring';
 
     protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
     protected static string $view = 'filament.pages.master-template';
-    protected static ?string $navigationLabel = 'Kelola Indikator Monitoring';
+    protected static ?string $navigationLabel = 'Kelola Penilaian Monitoring';
     protected static ?string $navigationGroup = 'Admin';
     protected static ?int $navigationSort = 1;
 

@@ -25,10 +25,6 @@ class MonitoringDeskelResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-receipt-percent';
 
-
-    protected static ?string $navigationLabel =
-    (Auth::user()?->hasAnyRole(['Super Admin', 'Admin'])) ? 'Monitoring Progress' : 'Input Monitoring';
-
     protected static ?int $navigationSort = 1;
 
     protected static ?string $slug = 'monitoring-deskel';
@@ -213,5 +209,14 @@ class MonitoringDeskelResource extends Resource
         }
 
         return $query->whereRaw('1=0');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        if (Auth::user()?->hasAnyRole(['Super Admin', 'Admin'])) {
+            return 'Monitoring Progress';
+        }
+
+        return 'Input Monitoring';
     }
 }

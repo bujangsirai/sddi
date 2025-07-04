@@ -22,36 +22,42 @@
             @foreach ($detailProgress as $i => $indikator)
                 <x-filament::card>
 
-                    <div class="mb-2">
 
-                        <x-filament::button size="sm" wire:click="addDetail({{ $i }})">
-                            <div class="flex items-center gap-x-1">
-                                <x-heroicon-o-plus class="w-4 h-4" />
-                                Tambah Indikator
-                            </div>
-                        </x-filament::button>
-
-
-                        <x-filament::button color="danger" size="sm"
-                            wire:click="removeIndikator({{ $i }})">
-                            <div class="flex items-center gap-x-1">
-                                <x-heroicon-o-trash class="w-4 h-4" />
-                                Hapus Aspek
-                            </div>
-                        </x-filament::button>
-                    </div>
                     <label class="items-center justify-between block w-full mb-2 text-sm font-medium text-gray-700">
-                        Aspek
+                        <div class="flex items-baseline justify-between">
+                            <span class="text-lg">
+                                Aspek
+                            </span>
+                            <x-filament::button color="danger" size="sm"
+                                wire:click="removeIndikator({{ $i }})">
+                                <div class="flex items-center gap-x-1">
+                                    <x-heroicon-o-trash class="w-4 h-4" />
+                                    Hapus Aspek
+                                </div>
+                            </x-filament::button>
+                        </div>
+
                         <div class="flex w-full gap-2 mt-1">
                             <input wire:model="detailProgress.{{ $i }}.indikator"
                                 class="flex-grow p-2 border rounded" placeholder="Nama Indikator">
-
                         </div>
                     </label>
 
+                    <div class=h-2></div>
                     <label
                         class="items-center justify-between block w-full mb-2 space-y-2 text-sm font-medium text-gray-700">
-                        Indikator
+                        <div class="flex items-baseline justify-between">
+                            <span class="text-lg">
+                                Indikator
+                            </span>
+                            <x-filament::button size="sm" wire:click="addDetail({{ $i }})">
+                                <div class="flex items-center gap-x-1">
+                                    <x-heroicon-o-plus class="w-4 h-4" />
+                                    Tambah Indikator
+                                </div>
+                            </x-filament::button>
+                        </div>
+
                         @foreach ($indikator['detail'] as $j => $item)
                             <div class="flex gap-2">
                                 <input wire:model="detailProgress.{{ $i }}.detail.{{ $j }}.nama"
@@ -66,10 +72,7 @@
 
                 </x-filament::card>
             @endforeach
-
-
         </div>
-
     </div>
 
 
