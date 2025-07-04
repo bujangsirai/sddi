@@ -44,7 +44,6 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\FilamentInfoWidget::class,
             ])
             ->navigationGroups([
-                'Input Monitoring',
                 'Role dan Permission',
                 'Admin',
             ])
@@ -68,6 +67,7 @@ class AdminPanelProvider extends PanelProvider
             )
             ->plugin(
                 FilamentSpatieRolesPermissionsPlugin::make()
-            );
+            )
+            ->viteTheme('resources/css/app.css');
     }
 }

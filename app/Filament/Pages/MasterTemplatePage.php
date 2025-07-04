@@ -20,6 +20,11 @@ class MasterTemplatePage extends Page
     protected static ?string $navigationGroup = 'Admin';
     protected static ?int $navigationSort = 1;
 
+    public static function canAccess(): bool
+    {
+        return Auth::user()?->hasAnyRole(['Super Admin', 'Admin']);
+    }
+
     public function getViewData(): array
     {
         $template = MasterTemplate::first();

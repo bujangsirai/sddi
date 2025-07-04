@@ -24,8 +24,11 @@ class MonitoringDeskelResource extends Resource
     protected static ?string $model = MonitoringDeskel::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-receipt-percent';
-    protected static ?string $navigationLabel = 'Input Monitoring';
-    protected static ?string $navigationGroup = 'Input Monitoring';
+
+
+    protected static ?string $navigationLabel =
+    (Auth::user()?->hasAnyRole(['Super Admin', 'Admin'])) ? 'Monitoring Progress' : 'Input Monitoring';
+
     protected static ?int $navigationSort = 1;
 
     protected static ?string $slug = 'monitoring-deskel';
@@ -37,14 +40,14 @@ class MonitoringDeskelResource extends Resource
 
 
                 Repeater::make('detail_progress')
-                    ->label('Detail Progress')
+                    ->label('Progress Pengisian Website Desa Kabupaten Sumbawa Barat')
                     ->columns(2)
                     // ->addActionLabel(function ($state) {
                     //     return $state['indikator'] ?? 'Indikator';
                     // })
                     ->schema([
                         TextInput::make('indikator')
-                            ->label('Nama Indikator')
+                            ->label('Aspek')
                             ->required()
                             ->disabled()
                             ->dehydrated(true),
@@ -67,13 +70,14 @@ class MonitoringDeskelResource extends Resource
                             ->dehydrated(true),
 
                         Repeater::make('detail')
-                            ->label('Detail Indikator')
+                            ->label('Indikator')
                             // ->addActionLabel(function ($state) {
                             //     return $state['nama'] ?? 'Detail';
                             // })
                             ->schema([
+
                                 TextInput::make('nama')
-                                    ->label('Nama Detail')
+                                    ->label('Nama Indikator')
                                     ->required()
                                     ->disabled()
                                     ->dehydrated(true),
@@ -81,6 +85,8 @@ class MonitoringDeskelResource extends Resource
                                 TextInput::make('nilai')
                                     ->label('Persentase Selesai')
                                     ->numeric()
+                                    ->minValue(0)
+                                    ->maxValue(100)
                                     ->required()
                                     ->afterStateUpdated(function ($state, $set, $get) {
                                         $detail = $get('../../detail') ?? [];
@@ -103,7 +109,8 @@ class MonitoringDeskelResource extends Resource
 
                 Textarea::make('catatan')
                     ->label('Catatan')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+
             ]);
     }
 
@@ -129,6 +136,7 @@ class MonitoringDeskelResource extends Resource
 
                 TextColumn::make('catatan')
                     ->label('Catatan')
+
                     ->searchable()
                     ->sortable(),
 

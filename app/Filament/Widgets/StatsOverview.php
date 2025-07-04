@@ -27,15 +27,15 @@ class StatsOverview extends BaseWidget
             });
         }
 
-        if ($user->hasRole('Kabupaten')) {
+        if ($user->hasAnyRole(['Super Admin', 'Admin', 'Kabupaten'])) {
 
-            $labelWilayah = 'Kabupaten Sumbawa Barat';
+            $labelWilayah = '';
         }
 
         if ($user->hasRole('Kecamatan')) {
             $wilkerstatIds = $user->masterKecamatan()->pluck('master_kecamatan.wilkerstat_kecamatan_id');
             $namaKecamatans = $user->masterKecamatan()->pluck('master_kecamatan.kecamatan')->toArray();
-            $labelWilayah = 'Kecamatan ' . self::implodeWithAnd($namaKecamatans);
+            $labelWilayah = 'di Kecamatan ' . self::implodeWithAnd($namaKecamatans);
             $query->whereHas('masterDeskel.masterKecamatan', function ($q) use ($wilkerstatIds) {
                 $q->whereIn('wilkerstat_kecamatan_id', $wilkerstatIds);
             });
@@ -48,8 +48,8 @@ class StatsOverview extends BaseWidget
         $belum = $total - $selesai;
         $persen = $average !== null ? number_format($average, 2) . '%' : '0%';
         return [
-            Stat::make('Total Desa/Kelurahan Selesai di ' . $labelWilayah, $selesai),
-            Stat::make('Total Desa/Kelurahan Belum di ' . $labelWilayah, $belum),
+            Stat::make('Total Desa/Kelurahan Selesai ' . $labelWilayah, $selesai),
+            Stat::make('Total Desa/Kelurahan Belum ' . $labelWilayah, $belum),
 
             Stat::make('Persentase Penyelesaian', $persen)
                 ->chart([0, 59])
